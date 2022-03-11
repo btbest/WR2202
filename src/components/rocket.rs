@@ -1,5 +1,13 @@
 use bevy::prelude::*;
-use crate::{AnimationTimer};
+struct RocketPhysicsTimer(Timer);
+
+// This is used to build the initial value of our local timer resource in `animation_system`
+impl Default for RocketPhysicsTimer {
+    fn default() -> Self {
+        RocketPhysicsTimer(Timer::from_seconds(0.05, true))
+    }
+}
+
 
 pub struct RocketPlugin;
 
@@ -15,18 +23,21 @@ impl Plugin for RocketPlugin {
 // `Local` is a local resource scoped to this system (see https://bevy-cheatbook.github.io/programming/local)
 // `With` is a filter for queries (see https://bevy-cheatbook.github.io/programming/queries.html#query-filters)
 fn rocket_movement_system_l(
-    mut timer: Local<AnimationTimer>,
+    mut timer: Local<RocketPhysicsTimer>,
     time: Res<Time>,
-    mut query: Query<&mut Transform, With<RocketL>>,
+    mut query: Query<(&mut Transform, &mut RocketL)>,
 ) {
-    let speed = 10.;
+    let acceleration = 4.;
     timer.0.tick(time.delta());
     if timer.0.just_finished() {
-        query.single_mut().translation.x += speed;
+        query.for_each_mut(|(mut transform, mut rocket)|{
+            transform.translation.x += rocket.velocity;
+            rocket.velocity += acceleration;
+        });
     };
 }
 fn rocket_movement_system_r(
-    mut timer: Local<AnimationTimer>,
+    mut timer: Local<RocketPhysicsTimer>,
     time: Res<Time>,
     mut query: Query<&mut Transform, With<RocketR>>,
 ) {
@@ -34,7 +45,9 @@ fn rocket_movement_system_r(
 
 
 #[derive(Component)]
-pub struct RocketL;
+pub struct RocketL {
+    pub velocity: f32
+}
 
 #[derive(Component)]
 pub struct RocketR;

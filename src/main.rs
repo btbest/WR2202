@@ -5,6 +5,8 @@ mod systems;
 
 use bevy::prelude::*;
 use animate::AnimatePlugin;
+use components::rocket::RocketL;
+use components::rocket::RocketPlugin;
 use systems::movement_systems::*;
 use systems::rocket_spawn::*;
 use components::players::*;
@@ -26,6 +28,7 @@ fn main() {
         .add_system(move_system_r)
         .add_system(spawn_rocket_l)
         .add_system(spawn_rocket_r)
+        .add_plugin(RocketPlugin)
         // This is an example of how to structure your game in multiple files.
         // We moved a system into a custom plugin.
         .add_plugin(AnimatePlugin)
@@ -59,7 +62,7 @@ fn start_up(
         transform: Transform::from_scale(Vec3::new(5., 5., 5.)),
         texture_atlas: rocket_atlas_handle_l,
         ..SpriteSheetBundle::default()
-    });
+    }).insert(RocketL {velocity:0.0});
     // Render a rocket from a png file
     commands.spawn_bundle(SpriteSheetBundle {
         // Position of the tree
@@ -108,6 +111,6 @@ struct AnimationTimer(Timer);
 // This is used to build the initial value of our local timer resource in `animation_system`
 impl Default for AnimationTimer {
     fn default() -> Self {
-        AnimationTimer(Timer::from_seconds(0.2, true))
+        AnimationTimer(Timer::from_seconds(0.1, true))
     }
 }
