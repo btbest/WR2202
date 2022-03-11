@@ -9,6 +9,7 @@ use components::rocket::RocketPlugin;
 use components::rocket::RocketR;
 use systems::movement_systems::*;
 use systems::rocket_spawn::*;
+use systems::collision_detection::*;
 use components::players::*;
 use components::rocket::*;
 
@@ -31,6 +32,7 @@ fn main() {
         .add_system(spawn_rocket_r)
         // .add_system(text_update_system)
         .add_plugin(RocketPlugin)
+        .add_plugin(CollisionDetectionPlugin)
         // This is an example of how to structure your game in multiple files.
         // We moved a system into a custom plugin.
         .add_plugin(AnimatePlugin)
