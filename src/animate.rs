@@ -21,6 +21,6 @@ fn animation_system(
 ) {
     timer.0.tick(time.delta());
     if timer.0.just_finished() {
-        query.single_mut().index = (query.single_mut().index + 1) % 8 + 36;
+        query.single_mut().index = (query.single_mut().index + 1) % 1;
     };
 }
