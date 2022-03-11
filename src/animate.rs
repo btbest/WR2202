@@ -36,3 +36,14 @@ fn animation_system_r(
         query.single_mut().index = (query.single_mut().index + 1) % 2;
     };
 }
+
+fn rocket_animation_system(
+    mut timer: Local<AnimationTimer>,
+    time: Res<Time>,
+    mut query: Query<&mut TextureAtlasSprite, With<PlayerL>>,
+) {
+    timer.0.tick(time.delta());
+    if timer.0.just_finished() {
+        query.single_mut().index = (query.single_mut().index + 1) % 2;
+    };
+}
