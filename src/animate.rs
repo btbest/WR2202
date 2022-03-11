@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use crate::{AnimationTimer, App, Local, Query, Res, TextureAtlasSprite, Time, With};
 use crate::components::players::*;
+use crate::components::rocket::*;
 
 pub struct AnimatePlugin;
 
@@ -8,7 +9,8 @@ impl Plugin for AnimatePlugin {
     fn build(&self, app: &mut App) {
         app.add_system(animation_system_l);
         app.add_system(animation_system_r);
-        app.add_system(rocket_animation_system);
+        app.add_system(rocket_animation_system_l);
+        app.add_system(rocket_animation_system_r);
     }
 }
 
@@ -39,10 +41,21 @@ fn animation_system_r(
     };
 }
 
-fn rocket_animation_system(
+fn rocket_animation_system_l(
     mut timer: Local<AnimationTimer>,
     time: Res<Time>,
-    mut query: Query<&mut TextureAtlasSprite, With<PlayerL>>,
+    mut query: Query<&mut TextureAtlasSprite, With<RocketL>>,
+) {
+    timer.0.tick(time.delta());
+    if timer.0.just_finished() {
+        query.single_mut().index = (query.single_mut().index + 1) % 2;
+    };
+}
+
+fn rocket_animation_system_r(
+    mut timer: Local<AnimationTimer>,
+    time: Res<Time>,
+    mut query: Query<&mut TextureAtlasSprite, With<RocketR>>,
 ) {
     timer.0.tick(time.delta());
     if timer.0.just_finished() {

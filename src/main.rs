@@ -11,6 +11,7 @@ use components::rocket::RocketR;
 use systems::movement_systems::*;
 use systems::rocket_spawn::*;
 use components::players::*;
+use crate::components::rocket::*;
 
 fn main() {
     App::new()
@@ -49,12 +50,15 @@ fn start_up(
 
     let rocket_sprite_sheet_l = assets.load("RocketL.png");
     let rocket_sprite_sheet_r = assets.load("RocketR.png");
+    // let rocket_sprite_sheet_explosion = assets.load("RocketExplosion.png");
 
     let rocket_texture_atlas_l = TextureAtlas::from_grid(rocket_sprite_sheet_l, Vec2::new(8.0, 8.0), 2, 1);
     let rocket_texture_atlas_r = TextureAtlas::from_grid(rocket_sprite_sheet_r, Vec2::new(8.0, 8.0), 2, 1);
+    // let rocket_texture_atlas_explosion = TextureAtlas::from_grid(rocket_sprite_sheet_explosion, Vec2::new(16.0, 16.0), 5, 1);
 
     let rocket_atlas_handle_l = texture_atlases.add(rocket_texture_atlas_l);
     let rocket_atlas_handle_r = texture_atlases.add(rocket_texture_atlas_r);
+    // let rocket_atlas_handle_explosion = texture_atlases.add(rocket_texture_atlas_explosion);
 
     // Render a rocket from a png file
     commands.spawn_bundle(SpriteSheetBundle {
