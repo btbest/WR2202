@@ -15,6 +15,7 @@ impl Plugin for RocketPlugin {
     fn build(&self, app: &mut App) {
         app.add_system(rocket_movement_system_l);
         app.add_system(rocket_movement_system_r);
+        app.add_system(rocket_deletion_system);
     }
 }
 
@@ -49,6 +50,27 @@ fn rocket_movement_system_r(
             transform.translation.x -= rocket.velocity;
             rocket.velocity += acceleration;
         });
+    };
+}
+
+fn rocket_deletion_system(
+    mut timer: Local<RocketPhysicsTimer>,
+    time: Res<Time>,
+    mut commands: Commands,
+    mut query: Query<(Entity, &Transform, Option<&mut RocketL>, Option<&mut RocketR>)>, 
+    windows: Res<Windows>
+) {
+    let window = windows.get_primary().unwrap();
+    timer.0.tick(time.delta());
+    if timer.0.just_finished() {
+        query.for_each_mut(|(entity, transform, mut locket, mut rocket)|{
+            if matches!(locket, Some(locket)) && transform.translation.x > window.width()/2. + 25.0 {
+                commands.entity(entity).despawn();
+            }
+            if matches!(rocket, Some(rocket)) && transform.translation.x < -window.width()/2. - 25.0 {
+                commands.entity(entity).despawn();
+            }
+        })
     };
 }
 
