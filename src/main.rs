@@ -50,8 +50,8 @@ fn start_up(
     let sprite_sheet_l = assets.load("SpaceShipL.png");
     let sprite_sheet_r = assets.load("SpaceShipR.png");
     // Split it into a texture atlas be defining the grid dimensions
-    let texture_atlas_l = TextureAtlas::from_grid(sprite_sheet_l, Vec2::new(8.0, 8.0), 1, 2);
-    let texture_atlas_r = TextureAtlas::from_grid(sprite_sheet_r, Vec2::new(8.0, 8.0), 1, 2);
+    let texture_atlas_l = TextureAtlas::from_grid(sprite_sheet_l, Vec2::new(8.0, 8.0), 2, 1);
+    let texture_atlas_r = TextureAtlas::from_grid(sprite_sheet_r, Vec2::new(8.0, 8.0), 2, 1);
 
     // Add the new texture atlas to the asset's resource to get a Handle to it
     let atlas_handle_l = texture_atlases.add(texture_atlas_l);
@@ -61,7 +61,7 @@ fn start_up(
     commands
         .spawn_bundle(SpriteSheetBundle {
             // Draw the player above the tree
-            transform: Transform::from_translation(Vec3::new(0., 0., 1.)),
+            transform: Transform::from_scale( Vec3::new(5., 5., 5.)),
             texture_atlas: atlas_handle_l,
             ..SpriteSheetBundle::default()
         })
@@ -72,7 +72,7 @@ fn start_up(
     commands
         .spawn_bundle(SpriteSheetBundle {
             // Draw the player above the tree
-            transform: Transform::from_translation(Vec3::new(0., 0., 1.)),
+            transform: Transform::from_scale( Vec3::new(5., 5., 5.)),
             texture_atlas: atlas_handle_r,
             ..SpriteSheetBundle::default()
         })
