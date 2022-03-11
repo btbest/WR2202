@@ -1,4 +1,6 @@
 mod animate;
+mod components;
+mod systems;
 
 use bevy::prelude::*;
 use crate::animate::AnimatePlugin;
