@@ -52,7 +52,6 @@ fn rocket_movement_system_r(
     };
 }
 
-
 #[derive(Component)]
 pub struct RocketL {
     pub velocity: f32
@@ -61,4 +60,9 @@ pub struct RocketL {
 #[derive(Component)]
 pub struct RocketR{
     pub velocity: f32
+}
+
+pub struct RocketTextures {
+    pub rocket_texture_l: Handle<TextureAtlas>,
+    pub rocket_texture_r: Handle<TextureAtlas>
 }

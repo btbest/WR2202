@@ -11,7 +11,7 @@ use components::rocket::RocketR;
 use systems::movement_systems::*;
 use systems::rocket_spawn::*;
 use components::players::*;
-use crate::components::rocket::*;
+use components::rocket::*;
 
 fn main() {
     App::new()
@@ -48,35 +48,6 @@ fn start_up(
     // `spawn_bundle` spawns an entity and then adds a bunch of Components (the bundle) to it
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 
-    let rocket_sprite_sheet_l = assets.load("RocketL.png");
-    let rocket_sprite_sheet_r = assets.load("RocketR.png");
-    // let rocket_sprite_sheet_explosion = assets.load("RocketExplosion.png");
-
-    let rocket_texture_atlas_l = TextureAtlas::from_grid(rocket_sprite_sheet_l, Vec2::new(8.0, 8.0), 2, 1);
-    let rocket_texture_atlas_r = TextureAtlas::from_grid(rocket_sprite_sheet_r, Vec2::new(8.0, 8.0), 2, 1);
-    // let rocket_texture_atlas_explosion = TextureAtlas::from_grid(rocket_sprite_sheet_explosion, Vec2::new(16.0, 16.0), 5, 1);
-
-    let rocket_atlas_handle_l = texture_atlases.add(rocket_texture_atlas_l);
-    let rocket_atlas_handle_r = texture_atlases.add(rocket_texture_atlas_r);
-    // let rocket_atlas_handle_explosion = texture_atlases.add(rocket_texture_atlas_explosion);
-
-    // Render a rocket from a png file
-    commands.spawn_bundle(SpriteSheetBundle {
-        // Position of the tree
-        // In 2D: x -> right, y -> up, z -> layer towards camera
-        transform: Transform::from_scale(Vec3::new(5., 5., 5.)),
-        texture_atlas: rocket_atlas_handle_l,
-        ..SpriteSheetBundle::default()
-    }).insert(RocketL {velocity:0.0});
-    // Render a rocket from a png file
-    commands.spawn_bundle(SpriteSheetBundle {
-        // Position of the tree
-        // In 2D: x -> right, y -> up, z -> layer towards camera
-        transform: Transform::from_scale(Vec3::new(5., 5., 5.)),
-        texture_atlas: rocket_atlas_handle_r,
-        ..SpriteSheetBundle::default()
-    }).insert(RocketR {velocity:0.0});
-
     // Load the sprite sheet as an image
     let space_ship_sprite_sheet_l = assets.load("SpaceShipL.png");
     let space_ship_sprite_sheet_r = assets.load("SpaceShipR.png");
@@ -87,6 +58,19 @@ fn start_up(
     // Add the new texture atlas to the asset's resource to get a Handle to it
     let space_ship_atlas_handle_l = texture_atlases.add(space_ship_texture_atlas_l);
     let space_ship_atlas_handle_r = texture_atlases.add(space_ship_texture_atlas_r);
+
+    let rocket_sprite_sheet_l = assets.load("RocketL.png");
+    let rocket_texture_atlas_l = TextureAtlas::from_grid(rocket_sprite_sheet_l, Vec2::new(8.0, 8.0), 2, 1);
+    let rocket_atlas_handle_l = texture_atlases.add(rocket_texture_atlas_l);
+
+    let rocket_sprite_sheet_r = assets.load("RocketR.png");
+    let rocket_texture_atlas_r = TextureAtlas::from_grid(rocket_sprite_sheet_r, Vec2::new(8.0, 8.0), 2, 1);
+    let rocket_atlas_handle_r = texture_atlases.add(rocket_texture_atlas_r);
+    
+    let rocket_textures = RocketTextures { 
+        rocket_texture_l: rocket_atlas_handle_l, 
+        rocket_texture_r: rocket_atlas_handle_r};
+    commands.insert_resource(rocket_textures);
 
     // Spawn player L
     commands
