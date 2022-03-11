@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+
 struct RocketPhysicsTimer(Timer);
 
 // This is used to build the initial value of our local timer resource in `animation_system`
@@ -87,4 +88,8 @@ pub struct RocketR{
 pub struct RocketTextures {
     pub rocket_texture_l: Handle<TextureAtlas>,
     pub rocket_texture_r: Handle<TextureAtlas>
+}
+
+pub struct RocketAudio {
+    pub rocket_sound: Handle<AudioSource>
 }

@@ -2,7 +2,6 @@
 mod animate;
 mod components;
 mod systems;
-
 use bevy::prelude::*;
 use animate::AnimatePlugin;
 use components::rocket::RocketL;
@@ -71,6 +70,12 @@ fn start_up(
         rocket_texture_l: rocket_atlas_handle_l, 
         rocket_texture_r: rocket_atlas_handle_r};
     commands.insert_resource(rocket_textures);
+
+    let rocket_sound = assets.load("pew.ogg");
+    let rocket_audio = RocketAudio {
+        rocket_sound
+    };
+    commands.insert_resource(rocket_audio);
 
     // Spawn player L
     commands
