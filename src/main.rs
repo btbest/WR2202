@@ -7,6 +7,7 @@ use bevy::prelude::*;
 use animate::AnimatePlugin;
 use components::rocket::RocketL;
 use components::rocket::RocketPlugin;
+use components::rocket::RocketR;
 use systems::movement_systems::*;
 use systems::rocket_spawn::*;
 use components::players::*;
@@ -70,7 +71,7 @@ fn start_up(
         transform: Transform::from_scale(Vec3::new(5., 5., 5.)),
         texture_atlas: rocket_atlas_handle_r,
         ..SpriteSheetBundle::default()
-    });
+    }).insert(RocketR {velocity:0.0});
 
     // Load the sprite sheet as an image
     let space_ship_sprite_sheet_l = assets.load("SpaceShipL.png");

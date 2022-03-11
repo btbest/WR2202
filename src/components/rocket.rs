@@ -14,6 +14,7 @@ pub struct RocketPlugin;
 impl Plugin for RocketPlugin {
     fn build(&self, app: &mut App) {
         app.add_system(rocket_movement_system_l);
+        app.add_system(rocket_movement_system_r);
     }
 }
 
@@ -39,8 +40,16 @@ fn rocket_movement_system_l(
 fn rocket_movement_system_r(
     mut timer: Local<RocketPhysicsTimer>,
     time: Res<Time>,
-    mut query: Query<&mut Transform, With<RocketR>>,
+    mut query: Query<(&mut Transform, &mut RocketR)>,
 ) {
+    let acceleration = 4.;
+    timer.0.tick(time.delta());
+    if timer.0.just_finished() {
+        query.for_each_mut(|(mut transform, mut rocket)|{
+            transform.translation.x -= rocket.velocity;
+            rocket.velocity += acceleration;
+        });
+    };
 }
 
 
@@ -50,4 +59,6 @@ pub struct RocketL {
 }
 
 #[derive(Component)]
-pub struct RocketR;
+pub struct RocketR{
+    pub velocity: f32
+}
