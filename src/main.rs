@@ -30,6 +30,7 @@ fn start_up(
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
 ) {
     // Spawn a 2D camera
+    // Comment changed by Bene
     // `spawn_bundle` spawns an entity and then adds a bunch of Components (the bundle) to it
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 
