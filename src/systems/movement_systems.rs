@@ -10,13 +10,11 @@ struct Bounds {
 pub fn move_system_l(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<PlayerL>>, windows: Res<Windows>) {
     let speed = 10.;
     let window = windows.get_primary().unwrap();
-    let height = window.height();
-    let width = window.width();  
     let bounds = Bounds {
-        x0: -window.width()/2.,
-        x1: -window.width()/6.,
-        y0: -window.height()/2.,
-        y1: window.height()/2.,
+        x0: -window.width()/2. + 25.,
+        x1: -window.width()/6. - 25.,
+        y0: -window.height()/2. + 25.,
+        y1: window.height()/2. - 25.,
     };
     if input.pressed(KeyCode::W) {
         query.single_mut().translation.y += speed;
@@ -42,12 +40,18 @@ pub fn move_system_l(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform
     else if query.single_mut().translation.y > bounds.y1 {
         query.single_mut().translation.y = bounds.y1;
     }
-
 }
 
 
-pub fn move_system_r(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<PlayerR>>) {
+pub fn move_system_r(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<PlayerR>>, windows: Res<Windows>) {
     let speed = 10.;
+    let window = windows.get_primary().unwrap();
+    let bounds = Bounds {
+        x0: window.width()/6. + 25.,
+        x1: window.width()/2. - 25.,
+        y0: -window.height()/2. + 25.,
+        y1: window.height()/2. - 25.,
+    };
     if input.pressed(KeyCode::Up) {
         query.single_mut().translation.y += speed;
     }
@@ -59,6 +63,18 @@ pub fn move_system_r(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform
     }
     if input.pressed(KeyCode::Right) {
         query.single_mut().translation.x += speed;
+    }
+    if query.single_mut().translation.x < bounds.x0 {
+        query.single_mut().translation.x = bounds.x0;
+    }
+    else if query.single_mut().translation.x > bounds.x1 {
+        query.single_mut().translation.x = bounds.x1;
+    }
+    if query.single_mut().translation.y < bounds.y0 {
+        query.single_mut().translation.y = bounds.y0;
+    }
+    else if query.single_mut().translation.y > bounds.y1 {
+        query.single_mut().translation.y = bounds.y1;
     }
 }
 
