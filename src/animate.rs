@@ -8,6 +8,7 @@ impl Plugin for AnimatePlugin {
     fn build(&self, app: &mut App) {
         app.add_system(animation_system_l);
         app.add_system(animation_system_r);
+        app.add_system(rocket_animation_system);
     }
 }
 
