@@ -43,9 +43,9 @@ fn start_up(
     });
 
     // Load the sprite sheet as an image
-    let sprite_sheet = assets.load("character_zombie_sheet.png");
+    let sprite_sheet = assets.load("SpaceShip1.png");
     // Split it into a texture atlas be defining the grid dimensions
-    let texture_atlas = TextureAtlas::from_grid(sprite_sheet, Vec2::new(96.0, 128.0), 9, 5);
+    let texture_atlas = TextureAtlas::from_grid(sprite_sheet, Vec2::new(8.0, 8.0), 1, 2);
 
     // Add the new texture atlas to the asset's resource to get a Handle to it
     let atlas_handle = texture_atlases.add(texture_atlas);
