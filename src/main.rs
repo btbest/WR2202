@@ -18,7 +18,8 @@ fn main() {
         // This system runs once on startup
         .add_startup_system(start_up)
         // Run two systems every frame
-        .add_system(move_system)
+        .add_system(move_system_l)
+        .add_system(move_system_r)
         // This is an example of how to structure your game in multiple files.
         // We moved a system into a custom plugin.
         .add_plugin(AnimatePlugin)
@@ -46,26 +47,40 @@ fn start_up(
     });
 
     // Load the sprite sheet as an image
-    let sprite_sheet = assets.load("SpaceShip1.png");
+    let sprite_sheet_l = assets.load("SpaceShipL.png");
+    let sprite_sheet_r = assets.load("SpaceShipR.png");
     // Split it into a texture atlas be defining the grid dimensions
-    let texture_atlas = TextureAtlas::from_grid(sprite_sheet, Vec2::new(8.0, 8.0), 1, 2);
+    let texture_atlas_l = TextureAtlas::from_grid(sprite_sheet_l, Vec2::new(8.0, 8.0), 1, 2);
+    let texture_atlas_r = TextureAtlas::from_grid(sprite_sheet_r, Vec2::new(8.0, 8.0), 1, 2);
 
     // Add the new texture atlas to the asset's resource to get a Handle to it
-    let atlas_handle = texture_atlases.add(texture_atlas);
+    let atlas_handle_l = texture_atlases.add(texture_atlas_l);
+    let atlas_handle_r = texture_atlases.add(texture_atlas_r);
 
-    // Spawn the player
+    // Spawn player L
     commands
         .spawn_bundle(SpriteSheetBundle {
             // Draw the player above the tree
             transform: Transform::from_translation(Vec3::new(0., 0., 1.)),
-            texture_atlas: atlas_handle,
+            texture_atlas: atlas_handle_l,
             ..SpriteSheetBundle::default()
         })
         // add a "Marker" component to our player
-        .insert(Player);
+        .insert(PlayerL);
+
+    // Spawn player R
+    commands
+        .spawn_bundle(SpriteSheetBundle {
+            // Draw the player above the tree
+            transform: Transform::from_translation(Vec3::new(0., 0., 1.)),
+            texture_atlas: atlas_handle_r,
+            ..SpriteSheetBundle::default()
+        })
+        // add a "Marker" component to our player
+        .insert(PlayerR);
 }
 
-fn move_system(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<Player>>) {
+fn move_system_l(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<PlayerL>>) {
     let speed = 10.;
     if input.pressed(KeyCode::W) {
         query.single_mut().translation.y += speed;
@@ -81,8 +96,28 @@ fn move_system(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With
     }
 }
 
+
+fn move_system_r(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<PlayerR>>) {
+    let speed = 10.;
+    if input.pressed(KeyCode::Up) {
+        query.single_mut().translation.y += speed;
+    }
+    if input.pressed(KeyCode::Left) {
+        query.single_mut().translation.x -= speed;
+    }
+    if input.pressed(KeyCode::Down) {
+        query.single_mut().translation.y -= speed;
+    }
+    if input.pressed(KeyCode::Right) {
+        query.single_mut().translation.x += speed;
+    }
+}
+
 #[derive(Component)]
-struct Player;
+struct PlayerL;
+
+#[derive(Component)]
+struct PlayerR;
 
 struct AnimationTimer(Timer);
 
