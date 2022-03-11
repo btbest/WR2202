@@ -76,6 +76,10 @@ fn start_up(
         rocket_sound
     };
     commands.insert_resource(rocket_audio);
+    let hit_sound = assets.load("hit.ogg");
+    let player_audio = PlayerAudio {
+        hit_sound
+    };
 
     // Spawn player L
     commands

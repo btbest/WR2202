@@ -10,9 +10,13 @@ pub fn spawn_rocket_l(
     textures: Res<RocketTextures>,
     rocket_audio: Res<RocketAudio>,
     audio: Res<Audio>,
-    mut query: Query<&mut Transform, With<PlayerL>>
+    mut query: Query<&mut Transform, With<PlayerL>>,
+    mut timer: Local<CooldownTimer>,
+    time: Res<Time>,
 ) {
-    if input.just_pressed(KeyCode::LControl) {
+    timer.0.tick(time.delta());
+    if input.just_pressed(KeyCode::LControl) && timer.0.finished() {
+        timer.0.reset();
         println!("L ROCKET!!!");
         audio.play(rocket_audio.rocket_sound.clone());
         // Render a rocket from a png file
@@ -39,9 +43,13 @@ pub fn spawn_rocket_r(
     textures: Res<RocketTextures>,
     rocket_audio: Res<RocketAudio>,
     audio: Res<Audio>,
-    mut query: Query<&mut Transform, With<PlayerR>>
+    mut query: Query<&mut Transform, With<PlayerR>>,
+    mut timer: Local<CooldownTimer>,
+    time: Res<Time>,
 ) {
-    if input.just_pressed(KeyCode::RControl) {
+    timer.0.tick(time.delta());
+    if input.just_pressed(KeyCode::RControl) && timer.0.finished() {
+        timer.0.reset();
         println!("R ROCKET!!!");
         audio.play(rocket_audio.rocket_sound.clone());
         // Render a rocket from a png file
@@ -61,7 +69,7 @@ pub fn spawn_rocket_r(
     }
 }
 
-struct CooldownTimer(Timer);
+pub struct CooldownTimer(Timer);
 
 impl Default for CooldownTimer {
     fn default() -> Self {
