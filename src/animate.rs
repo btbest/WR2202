@@ -48,7 +48,7 @@ fn rocket_animation_system_l(
 ) {
     timer.0.tick(time.delta());
     if timer.0.just_finished() {
-        query.single_mut().index = (query.single_mut().index + 1) % 2;
+        query.for_each_mut(|mut atlas| {atlas.index = (atlas.index + 1) % 2});
     };
 }
 
@@ -59,6 +59,6 @@ fn rocket_animation_system_r(
 ) {
     timer.0.tick(time.delta());
     if timer.0.just_finished() {
-        query.single_mut().index = (query.single_mut().index + 1) % 2;
+        query.for_each_mut(|mut atlas| {atlas.index = (atlas.index + 1) % 2});
     };
 }

@@ -52,12 +52,12 @@ fn rocket_movement_system_r(
     };
 }
 
-#[derive(Component)]
+#[derive(Component, Default)]
 pub struct RocketL {
     pub velocity: f32
 }
 
-#[derive(Component)]
+#[derive(Component, Default)]
 pub struct RocketR{
     pub velocity: f32
 }

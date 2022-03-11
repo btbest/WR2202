@@ -19,7 +19,7 @@ pub fn spawn_rocket_l(
             transform: Transform::from_scale(Vec3::new(5., 5., 5.)),
             texture_atlas: textures.rocket_texture_l.clone(),
             ..SpriteSheetBundle::default()
-        });
+        }).insert(RocketL::default());
     }
 }
 
@@ -39,6 +39,6 @@ pub fn spawn_rocket_r(
             transform: Transform::from_scale(Vec3::new(5., 5., 5.)),
             texture_atlas: textures.rocket_texture_r.clone(),
             ..SpriteSheetBundle::default()
-        });
+        }).insert(RocketR::default());
     }
 }
