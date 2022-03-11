@@ -1,4 +1,6 @@
+#![allow(unused)]
 use bevy::prelude::*;
+use crate::components::players::*;
 
 struct Bounds {
     x0: f32,
@@ -77,9 +79,3 @@ pub fn move_system_r(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform
         query.single_mut().translation.y = bounds.y1;
     }
 }
-
-#[derive(Component)]
-pub struct PlayerL;
-
-#[derive(Component)]
-pub struct PlayerR;

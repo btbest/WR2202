@@ -1,10 +1,13 @@
+#![allow(unused)]
 mod animate;
 mod components;
 mod systems;
 
 use bevy::prelude::*;
-use crate::animate::AnimatePlugin;
+use animate::AnimatePlugin;
 use systems::movement_systems::*;
+use systems::rocket_spawn::*;
+use components::players::*;
 
 fn main() {
     App::new()
@@ -21,6 +24,8 @@ fn main() {
         // Run two systems every frame
         .add_system(move_system_l)
         .add_system(move_system_r)
+        .add_system(spawn_rocket_l)
+        .add_system(spawn_rocket_r)
         // This is an example of how to structure your game in multiple files.
         // We moved a system into a custom plugin.
         .add_plugin(AnimatePlugin)

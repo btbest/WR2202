@@ -1,5 +1,6 @@
 use bevy::prelude::*;
-use crate::{AnimationTimer, App, Local, PlayerL, PlayerR, Query, Res, TextureAtlasSprite, Time, With};
+use crate::{AnimationTimer, App, Local, Query, Res, TextureAtlasSprite, Time, With};
+use crate::components::players::*;
 
 pub struct AnimatePlugin;
 
