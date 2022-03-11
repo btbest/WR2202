@@ -29,6 +29,7 @@ fn main() {
         .add_system(move_system_r)
         .add_system(spawn_rocket_l)
         .add_system(spawn_rocket_r)
+        // .add_system(text_update_system)
         .add_plugin(RocketPlugin)
         // This is an example of how to structure your game in multiple files.
         // We moved a system into a custom plugin.
@@ -102,6 +103,44 @@ fn start_up(
         })
         // add a "Marker" component to our player
         .insert(PlayerR);
+
+        commands.spawn_bundle(UiCameraBundle::default());
+        // Text with one section
+        commands
+            .spawn_bundle(TextBundle {
+                style: Style {
+                    align_self: AlignSelf::FlexEnd,
+                    position_type: PositionType::Absolute,
+                    position: Rect {
+                        top: Val::Px(0.0),
+                        left: Val::Px(0.0),
+                        bottom: Val::Px(0.0),
+                        right: Val::Px(0.0),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+                // Use the `Text::with_section` constructor
+                text: Text::with_section(
+                    // Accepts a `String` or any type that converts into a `String`, such as `&str`
+                    "0 - 0",
+                    TextStyle {
+                        font: assets.load("FiraSans-Bold.ttf"),
+                        font_size: 100.0,
+                        color: Color::WHITE,
+                    },
+                    // Note: You can use `Default::default()` in place of the `TextAlignment`
+                    TextAlignment {
+                        horizontal: HorizontalAlign::Center,
+                        ..Default::default()
+                    },
+                ),
+                ..Default::default()
+            })
+            .insert(CounterText {
+                score_l: 0,
+                score_r: 0
+            });
 }
 
 struct AnimationTimer(Timer);
@@ -112,3 +151,20 @@ impl Default for AnimationTimer {
         AnimationTimer(Timer::from_seconds(0.1, true))
     }
 }
+
+#[derive(Component)]
+struct CounterText {
+    score_l: u8,
+    score_r: u8
+}
+
+// fn text_update_system(mut query: Query<&mut Text, &CounterText>) {
+//     for mut text in query.iter_mut() {
+//         if let Some(fps) = diagnostics.get(FrameTimeDiagnosticsPlugin::FPS) {
+//             if let Some(average) = fps.average() {
+//                 // Update the value of the second section
+//                 text.sections[1].value = format!("{:.2}", average);
+//             }
+//         }
+//     }
+// }
