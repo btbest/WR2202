@@ -4,6 +4,7 @@ mod systems;
 
 use bevy::prelude::*;
 use crate::animate::AnimatePlugin;
+use systems::movement_systems::*;
 
 fn main() {
     App::new()
@@ -79,46 +80,6 @@ fn start_up(
         // add a "Marker" component to our player
         .insert(PlayerR);
 }
-
-fn move_system_l(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<PlayerL>>) {
-    let speed = 10.;
-    if input.pressed(KeyCode::W) {
-        query.single_mut().translation.y += speed;
-    }
-    if input.pressed(KeyCode::A) {
-        query.single_mut().translation.x -= speed;
-    }
-    if input.pressed(KeyCode::S) {
-        query.single_mut().translation.y -= speed;
-    }
-    if input.pressed(KeyCode::D) {
-        query.single_mut().translation.x += speed;
-    }
-}
-
-
-fn move_system_r(input: Res<Input<KeyCode>>, mut query: Query<&mut Transform, With<PlayerR>>) {
-    let speed = 10.;
-    if input.pressed(KeyCode::Up) {
-        query.single_mut().translation.y += speed;
-    }
-    if input.pressed(KeyCode::Left) {
-        query.single_mut().translation.x -= speed;
-    }
-    if input.pressed(KeyCode::Down) {
-        query.single_mut().translation.y -= speed;
-    }
-    if input.pressed(KeyCode::Right) {
-        query.single_mut().translation.x += speed;
-    }
-}
-
-#[derive(Component)]
-struct PlayerL;
-
-#[derive(Component)]
-struct PlayerR;
-
 struct AnimationTimer(Timer);
 
 // This is used to build the initial value of our local timer resource in `animation_system`
