@@ -10,5 +10,6 @@ impl Plugin for PlayerPlugin {
         app.add_system(move_system_r);
         app.add_system(animation_system_l);
         app.add_system(animation_system_r);
+        app.add_system(collision_detection_system);
     }
 }

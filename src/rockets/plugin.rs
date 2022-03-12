@@ -13,6 +13,5 @@ impl Plugin for RocketPlugin {
         app.add_system(rocket_animation_system_l);
         app.add_system(rocket_animation_system_r);
         app.add_system(rocket_deletion_system);
-        app.add_system(collision_detection_system);
     }
 }
