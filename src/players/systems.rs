@@ -63,7 +63,7 @@ pub fn start_up_player_system(
             ..SpriteSheetBundle::default()
         })
         // add a "Marker" component to our player
-        .insert(PlayerL);
+        .insert(PlayerL::default());
 
     // Spawn player R
     commands
@@ -74,7 +74,7 @@ pub fn start_up_player_system(
             ..SpriteSheetBundle::default()
         })
         // add a "Marker" component to our player
-        .insert(PlayerR);
+        .insert(PlayerR::default());
 }
 
 
@@ -196,8 +196,8 @@ pub fn collision_detection_system(
 ) {
     timer.0.tick(time.delta());
     if timer.0.just_finished() {
-        let playel = q_playel.single_mut();
-        let prayer = q_prayer.single_mut();
+        let mut playel = q_playel.single_mut();
+        let mut prayer = q_prayer.single_mut();
         q_locket.for_each_mut(|(
             r_entity, 
             r_transform,
@@ -212,6 +212,7 @@ pub fn collision_detection_system(
                 Vec2::new(r_transform.scale.x, r_transform.scale.y),
             ).is_some(){
                 println!("locket despawned, point for player L");
+                playel.2.points += 1;
                 audio.play(player_audio.hit_sound.clone());
                 // TODO: Increase pointer for player L
                 commands.entity(r_entity).despawn();
@@ -230,6 +231,7 @@ pub fn collision_detection_system(
                 Vec2::new(r_transform.scale.x, r_transform.scale.y),
             ).is_some(){
                 println!("rocket despawned, point for player R");
+                prayer.2.points += 1;
                 audio.play(player_audio.hit_sound.clone());
                 // TODO: Increase pointer for player R
                 commands.entity(r_entity).despawn();

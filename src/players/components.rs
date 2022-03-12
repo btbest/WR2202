@@ -1,8 +1,12 @@
 use bevy::prelude::*;
 
 
-#[derive(Component)]
-pub struct PlayerL;
+#[derive(Component, Default)]
+pub struct PlayerL {
+    pub points: u8
+}
 
-#[derive(Component)]
-pub struct PlayerR;
+#[derive(Component, Default)]
+pub struct PlayerR {
+    pub points: u8
+}
