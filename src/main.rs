@@ -1,5 +1,6 @@
 //#![allow(unused)]
 use bevy::prelude::*;
+use bevy::window::WindowMode;
 mod players;
 mod rockets;
 mod interaction;
@@ -17,6 +18,7 @@ fn main() {
         //     width: 640.0,
         //     height: 480.0,
         //     vsync: true,
+        //     mode: WindowMode::Fullscreen,
         //     ..Default::default()
         // })
         // This gives you a game-loop, a window, audio, asset server and so on... (basically the default engine)
