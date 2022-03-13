@@ -2,14 +2,23 @@
 use bevy::prelude::*;
 mod players;
 mod rockets;
+mod interaction;
 mod ui;
 use crate::players::plugin::PlayerPlugin;
 use crate::rockets::plugin::RocketPlugin;
+use crate::interaction::plugin::InteractionPlugin;
 use crate::ui::plugin::UIPlugin;
 
 
 fn main() {
     App::new()
+        // .insert_resource(WindowDescriptor {
+        //     title: "War Rockets 2202".to_string(),
+        //     width: 640.0,
+        //     height: 480.0,
+        //     vsync: true,
+        //     ..Default::default()
+        // })
         // This gives you a game-loop, a window, audio, asset server and so on... (basically the default engine)
         // See https://github.com/bevyengine/bevy/blob/v0.6.0/examples/app/plugin_group.rs for more info on plugin groups
         .add_plugins(DefaultPlugins)
@@ -24,6 +33,7 @@ fn main() {
         // We moved a system into a custom plugin.
         .add_plugin(RocketPlugin)
         .add_plugin(PlayerPlugin)
+        .add_plugin(InteractionPlugin)
         .add_plugin(UIPlugin)
         // Let's goooooo
         .run();
