@@ -3,10 +3,10 @@ use bevy::prelude::*;
 
 #[derive(Component)]
 pub struct Player {
-    pub points: u8,
+    pub hp: u8,
     pub keys: Keys,
     pub bounds: Bounds,
-    // pub cooldown: f32
+    pub on_cooldown: bool
 }
 
 pub struct Keys {

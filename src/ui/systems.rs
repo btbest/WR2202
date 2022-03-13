@@ -49,9 +49,9 @@ pub fn text_update_system(
     let (mut points_l, mut points_r) = (0, 0);
     for (player, team) in query_player.iter() {
         if team.side == 'L' {
-            points_l = player.points;
+            points_l = player.hp;
         } else if team.side == 'R' {
-            points_r = player.points;
+            points_r = player.hp;
         }
     }
     // Update the value of the second section

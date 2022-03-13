@@ -31,28 +31,45 @@ pub fn start_up_rockets(
 }
 
 
-pub struct CooldownTimer(Timer);
+pub struct CooldownTimerL(Timer);
 
-impl Default for CooldownTimer {
+impl Default for CooldownTimerL {
     fn default() -> Self {
-        CooldownTimer(Timer::from_seconds(0.5, false))
+        CooldownTimerL(Timer::from_seconds(0.5, false))
+    }
+}
+
+pub struct CooldownTimerR(Timer);
+
+impl Default for CooldownTimerR {
+    fn default() -> Self {
+        CooldownTimerR(Timer::from_seconds(0.5, false))
     }
 }
 
 pub fn spawn_rocket(
     mut commands: Commands,
-    mut query: Query<(&mut Transform, &Player, &Team)>,
+    mut query: Query<(&mut Transform, &mut Player, &Team)>,
     input: Res<Input<KeyCode>>,
-    mut timer: Local<CooldownTimer>,
+    mut timer_l: Local<CooldownTimerL>,
+    mut timer_r: Local<CooldownTimerR>,
     time: Res<Time>,
     textures: Res<RocketTextures>,
     rocket_audio: Res<RocketAudio>,
     audio: Res<Audio>,
 ) {
-    timer.0.tick(time.delta());
-    for (transform, player, team) in query.iter_mut() {
-        if input.just_pressed(player.keys.fire) {
-            timer.0.reset();
+    timer_l.0.tick(time.delta());
+    timer_r.0.tick(time.delta());
+    for (transform, mut player, team) in query.iter_mut() {
+        if team.side == 'L' && timer_l.0.finished() {
+            player.on_cooldown = false;
+            timer_l.0.reset();
+        }
+        if team.side == 'R' && timer_r.0.finished() {
+            player.on_cooldown = false;
+            timer_r.0.reset();
+        }
+        if input.just_pressed(player.keys.fire) && !player.on_cooldown {
             println!("{} ROCKET!!!", team.side);
             audio.play(rocket_audio.rocket_sound.clone());
             // Render a rocket from a png file
@@ -75,6 +92,7 @@ pub fn spawn_rocket(
             .insert(Team {
                 side: team.side,
             });
+            player.on_cooldown = true;
         }
     }
 }

@@ -36,7 +36,7 @@ pub fn start_up_player_system(
         })
         // add a "Marker" component to our player
         .insert(Player {
-            points: 0,
+            hp: 10,
             keys: Keys {
                 up: KeyCode::W, 
                 left: KeyCode::A, 
@@ -49,7 +49,8 @@ pub fn start_up_player_system(
                 x1: -window.width()/6. - 25.,
                 y0: -window.height()/2. + 25.,
                 y1: window.height()/2. - 25.,
-            }
+            },
+            on_cooldown: false
         }).insert(Team {
             side: 'L',
         });
@@ -63,7 +64,7 @@ pub fn start_up_player_system(
         })
         // add a "Marker" component to our player
         .insert(Player {
-            points: 0,
+            hp: 10,
             keys: Keys {
                 up: KeyCode::Up, 
                 left: KeyCode::Left, 
@@ -76,7 +77,8 @@ pub fn start_up_player_system(
                 x1: window.width()/2. - 25.,
                 y0: -window.height()/2. + 25.,
                 y1: window.height()/2. - 25.,
-            }
+            },
+            on_cooldown: false
         }).insert(Team {
             side: 'R',
         });
