@@ -31,6 +31,8 @@ fn main() {
         .insert_resource(Msaa { samples: 1 })
         // This system runs once on startup
         .add_startup_system(start_up)
+        // Exit on escape:
+        .add_system(bevy::input::system::exit_on_esc_system)
         // This is an example of how to structure your game in multiple files.
         // We moved a system into a custom plugin.
         .add_plugin(RocketPlugin)
