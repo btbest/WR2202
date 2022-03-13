@@ -29,9 +29,9 @@ pub fn collision_detection_system(
             } else {
                 if collide(
                     transform_p.translation, 
-                    Vec2::new(32.*transform_p.scale.x, 32.*transform_p.scale.y), 
+                    Vec2::new(16.*transform_p.scale.x, 32.*transform_p.scale.y), 
                     transform_r.translation,
-                    Vec2::new(8.*transform_r.scale.x, 8.*transform_r.scale.y),
+                    Vec2::new(8.*transform_r.scale.x, 4.*transform_r.scale.y),
                 ).is_some(){
                     println!("Player {} was hit!", team_p.side);
                     player.hp -= 1;

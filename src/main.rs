@@ -13,14 +13,14 @@ use crate::ui::plugin::UIPlugin;
 
 fn main() {
     App::new()
-        // .insert_resource(WindowDescriptor {
-        //     title: "War Rockets 2202".to_string(),
-        //     width: 640.0,
-        //     height: 480.0,
-        //     vsync: true,
-        //     mode: WindowMode::Fullscreen,
-        //     ..Default::default()
-        // })
+        .insert_resource(WindowDescriptor {
+            title: "War Rockets 2202".to_string(),
+            width: 640.0,
+            height: 480.0,
+            vsync: true,
+            mode: WindowMode::SizedFullscreen,
+            ..Default::default()
+        })
         // This gives you a game-loop, a window, audio, asset server and so on... (basically the default engine)
         // See https://github.com/bevyengine/bevy/blob/v0.6.0/examples/app/plugin_group.rs for more info on plugin groups
         .add_plugins(DefaultPlugins)
