@@ -5,10 +5,12 @@ mod players;
 mod rockets;
 mod interaction;
 mod ui;
+mod explosions;
 use crate::players::plugin::PlayerPlugin;
 use crate::rockets::plugin::RocketPlugin;
 use crate::interaction::plugin::InteractionPlugin;
 use crate::ui::plugin::UIPlugin;
+use crate::explosions::plugin::ExplosionsPlugin;
 
 
 fn main() {
@@ -39,6 +41,7 @@ fn main() {
         .add_plugin(PlayerPlugin)
         .add_plugin(InteractionPlugin)
         .add_plugin(UIPlugin)
+        .add_plugin(ExplosionsPlugin)
         // Let's goooooo
         .run();
 }
