@@ -36,7 +36,7 @@ pub fn start_up_player_system(
         })
         // add a "Marker" component to our player
         .insert(Player {
-            hp: 10,
+            hp: 9,
             keys: Keys {
                 up: KeyCode::W, 
                 left: KeyCode::A, 
@@ -64,7 +64,7 @@ pub fn start_up_player_system(
         })
         // add a "Marker" component to our player
         .insert(Player {
-            hp: 10,
+            hp: 9,
             keys: Keys {
                 up: KeyCode::Up, 
                 left: KeyCode::Left, 
