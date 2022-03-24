@@ -9,6 +9,6 @@ impl Plugin for RocketPlugin {
         app.add_system(spawn_rocket);
         app.add_system(rocket_movement_system);
         app.add_system(rocket_animation_system);
-        app.add_system(rocket_deletion_system);
+        app.add_system(rocket_offscreen_system);
     }
 }

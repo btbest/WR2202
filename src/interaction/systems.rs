@@ -6,16 +6,6 @@ use crate::rockets::components::*;
 use crate::explosions::components::*;
 use crate::explosions::resources::*;
 
-
-pub struct CollisionTimer(Timer);
-
-// This is used to build the initial value of our local timer resource in `animation_system`
-impl Default for CollisionTimer {
-    fn default() -> Self {
-        CollisionTimer(Timer::from_seconds(0.001, true))
-    }
-}
-
 pub fn collision_detection_system(
     mut commands: Commands,
     mut query_players: Query<(&Transform, &mut Player, &Team)>,
@@ -29,6 +19,7 @@ pub fn collision_detection_system(
             if team_r.side == team_p.side { 
                 break // No friendly fire :-)
             } else {
+                println!("positions: player: {}, rocket: {}", transform_p.translation, transform_r.translation);
                 if collide(
                     transform_p.translation, 
                     Vec2::new(16.*transform_p.scale.x, 32.*transform_p.scale.y), 

@@ -35,7 +35,7 @@ pub struct CooldownTimerL(Timer);
 
 impl Default for CooldownTimerL {
     fn default() -> Self {
-        CooldownTimerL(Timer::from_seconds(0.5, false))
+        CooldownTimerL(Timer::from_seconds(0.5, true))
     }
 }
 
@@ -43,13 +43,13 @@ pub struct CooldownTimerR(Timer);
 
 impl Default for CooldownTimerR {
     fn default() -> Self {
-        CooldownTimerR(Timer::from_seconds(0.5, false))
+        CooldownTimerR(Timer::from_seconds(0.5, true))
     }
 }
 
 pub fn spawn_rocket(
     mut commands: Commands,
-    mut query: Query<(&mut Transform, &mut Player, &Team)>,
+    mut query: Query<(&Transform, &mut Player, &Team)>,
     input: Res<Input<KeyCode>>,
     mut timer_l: Local<CooldownTimerL>,
     mut timer_r: Local<CooldownTimerR>,
@@ -72,7 +72,6 @@ pub fn spawn_rocket(
         if input.just_pressed(player.keys.fire) && !player.on_cooldown {
             println!("{} ROCKET!!!", team.side);
             audio.play(rocket_audio.rocket_sound.clone());
-            // Render a rocket from a png file
             let transform = Transform {
                 translation: Vec3::new(transform.translation.x, transform.translation.y, 0.),
                 scale: Vec3::new(5., 5., 5.),
@@ -103,7 +102,7 @@ pub struct RocketPhysicsTimer(Timer);
 // This is used to build the initial value of our local timer resource in `animation_system`
 impl Default for RocketPhysicsTimer {
     fn default() -> Self {
-        RocketPhysicsTimer(Timer::from_seconds(0.05, true))
+        RocketPhysicsTimer(Timer::from_seconds(0.005, true))
     }
 }
 
@@ -120,8 +119,8 @@ pub fn rocket_movement_system(
     if timer.0.just_finished() {
         query.for_each_mut(|(mut transform, mut rocket, team)|{
             let acceleration = match team.side {
-                'L' => 4.,
-                'R' => -4.,
+                'L' => 1.5,
+                'R' => -1.5,
                 _ => 0.,
             };
             transform.translation.x += rocket.velocity;
@@ -152,21 +151,17 @@ pub fn rocket_animation_system(
 }
 
 
-pub fn rocket_deletion_system(
-    mut timer: Local<RocketPhysicsTimer>,
-    time: Res<Time>,
+pub fn rocket_offscreen_system(
     mut commands: Commands,
     mut query: Query<(Entity, &Transform), With<Rocket>>, 
     windows: Res<Windows>
 ) {
     let window = windows.get_primary().unwrap();
-    timer.0.tick(time.delta());
-    if timer.0.just_finished() {
-        query.for_each_mut(|(entity, transform)|{
-            let x = transform.translation.x;
-            if x > window.width()/2. + 25.0 || x < -window.width()/2. - 25.0 {
-                commands.entity(entity).despawn();
-            }
-        })
-    };
+    query.for_each_mut(|(entity, transform)|{
+        let x = transform.translation.x;
+        if x > window.width()/2. + 25.0 || x < -window.width()/2. - 25.0 {
+            commands.entity(entity).despawn();
+            println!("Bye bye rocket :(");
+        }
+    })
 }

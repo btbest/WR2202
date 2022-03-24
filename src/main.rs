@@ -17,10 +17,10 @@ fn main() {
     App::new()
         .insert_resource(WindowDescriptor {
             title: "War Rockets 2202".to_string(),
-            width: 640.0,
-            height: 480.0,
+            width: 800.0,
+            height: 600.0,
             vsync: true,
-            mode: WindowMode::SizedFullscreen,
+            mode: WindowMode::Windowed,
             ..Default::default()
         })
         // This gives you a game-loop, a window, audio, asset server and so on... (basically the default engine)

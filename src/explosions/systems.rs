@@ -35,7 +35,6 @@ pub fn explosion_animation_and_despawn_system(
         explosion.lifetime = explosion.lifetime + time.delta();
         let max_lifetime = 500;  // in milliseconds
         let explosion_millis = explosion.lifetime.as_millis();
-        println!("{:?}: max_lifetime: {}", entity, max_lifetime);
         println!("{:?}: explosion_millis: {}", entity, explosion_millis);
         if explosion_millis >= max_lifetime {
             println!("Despawn explosion!");
@@ -43,8 +42,7 @@ pub fn explosion_animation_and_despawn_system(
         } else {
             atlas.index = ((explosion_millis as f32 / max_lifetime as f32) * 5.) as usize;
             // atlas.index = (atlas.index + 1) % 5;
-            println!("calculated index: {}", ((explosion_millis as f32 / max_lifetime as f32) * 5.) as usize);
-            println!("atlas index: {}", atlas.index)
+            println!("explosion atlas.index: {}", atlas.index)
         }
     })
 }
