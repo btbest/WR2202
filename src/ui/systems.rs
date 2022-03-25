@@ -88,7 +88,8 @@ pub fn restart_game(
     input: Res<Input<KeyCode>>,
     mut game_state: ResMut<State<GameState>>
 ) {
+    println!("GameState: {:?}", game_state.current());
     if input.just_pressed(KeyCode::Return) {
-        game_state.set(GameState::Menu).unwrap();
+        game_state.set(GameState::InGame).unwrap()
     }
 }
