@@ -5,9 +5,6 @@ use crate::players::components::*;
 use crate::rockets::components::*;
 use crate::interaction::components::*;
 
-use std::time::Duration;
-use std::thread::sleep;
-
 
 pub fn ui_start_up_system(
     mut commands: Commands,

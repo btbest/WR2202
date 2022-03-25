@@ -2,15 +2,17 @@
 use bevy::prelude::*;
 use bevy::window::WindowMode;
 mod players;
-mod rockets;
-mod interaction;
-mod ui;
-mod explosions;
 use crate::players::plugin::PlayerPlugin;
+mod rockets;
 use crate::rockets::plugin::RocketPlugin;
+mod interaction;
 use crate::interaction::plugin::InteractionPlugin;
+mod ui;
 use crate::ui::plugin::UIPlugin;
+mod explosions;
 use crate::explosions::plugin::ExplosionsPlugin;
+mod states;
+use crate::states::*;
 
 
 fn main() {
@@ -31,6 +33,7 @@ fn main() {
         // Turn off MSAA (default is 4 samples)
         // see https://bevy-cheatbook.github.io/builtins.html?highlight=MSAA#configuration-resources
         .insert_resource(Msaa { samples: 1 })
+        .add_state(AppState::Menu)
         // This system runs once on startup
         .add_startup_system(start_up)
         // Exit on escape:
