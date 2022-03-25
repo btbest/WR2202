@@ -1,5 +1,5 @@
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
-pub enum AppState {
+pub enum GameState {
     Menu,
     InGame,
 }

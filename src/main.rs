@@ -12,7 +12,7 @@ use crate::ui::plugin::UIPlugin;
 mod explosions;
 use crate::explosions::plugin::ExplosionsPlugin;
 mod states;
-use crate::states::*;
+use crate::states::GameState;
 
 
 fn main() {
@@ -33,7 +33,8 @@ fn main() {
         // Turn off MSAA (default is 4 samples)
         // see https://bevy-cheatbook.github.io/builtins.html?highlight=MSAA#configuration-resources
         .insert_resource(Msaa { samples: 1 })
-        .add_state(AppState::Menu)
+        // For a good States explanation, see https://github.com/bevyengine/bevy/pull/1059#issuecomment-744113314
+        .add_state(GameState::InGame)
         // This system runs once on startup
         .add_startup_system(start_up)
         // Exit on escape:

@@ -1,9 +1,9 @@
-use bevy::app::Events;
 use bevy::prelude::*;
 use crate::ui::components::*;
 use crate::players::components::*;
 use crate::rockets::components::*;
 use crate::interaction::components::*;
+use crate::states::GameState;
 
 
 pub fn ui_start_up_system(
@@ -19,7 +19,7 @@ pub fn ui_start_up_system(
         position_type: PositionType::Absolute,
         position: Rect {
             top: Val::Px(10.0),
-            left: Val::Px(220.0),
+            left: Val::Px(310.0),
             ..Default::default()
         },
         ..Default::default()
@@ -54,7 +54,7 @@ pub fn text_update_system(
     mut query_text: Query<&mut Text, With<CounterText>>,
     query_player: Query<(&Player, &Team)>,
     query_objects: Query<Entity, Or<(With<Player>, With<Rocket>)>>,
-    mut app_exit_events: ResMut<Events<bevy::app::AppExit>>
+    mut game_state: ResMut<State<GameState>>
 ) {
     let mut text = query_text.single_mut();
     let (mut points_l, mut points_r) = (0, 0);
@@ -79,6 +79,16 @@ pub fn text_update_system(
         query_objects.for_each(|entity| {
             commands.entity(entity).despawn();
         });
-        app_exit_events.send(bevy::app::AppExit)
+        game_state.set(GameState::Menu).unwrap();
+    }
+}
+
+
+pub fn restart_game(
+    input: Res<Input<KeyCode>>,
+    mut game_state: ResMut<State<GameState>>
+) {
+    if input.just_pressed(KeyCode::Return) {
+        game_state.set(GameState::Menu).unwrap();
     }
 }
