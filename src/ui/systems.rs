@@ -88,7 +88,7 @@ pub fn text_update_system(
 }
 
 
-pub fn restart_game(
+pub fn start_game_on_enter_system(
     input: Res<Input<KeyCode>>,
     mut game_state: ResMut<State<GameState>>
 ) {
