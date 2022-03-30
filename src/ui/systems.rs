@@ -9,7 +9,9 @@ use crate::states::GameState;
 pub fn ui_start_up_system(
     mut commands: Commands,
     assets: Res<AssetServer>,
+    windows: Res<Windows>
 ) {
+    let window = windows.get_primary().unwrap();
     commands.spawn_bundle(UiCameraBundle::default());
     // Text with one section
     let style = Style {
@@ -19,7 +21,7 @@ pub fn ui_start_up_system(
         position_type: PositionType::Absolute,
         position: Rect {
             top: Val::Px(10.0),
-            left: Val::Px(310.0),
+            left: Val::Px(window.width() / 2. - 84.), // definitely not empirically determined
             ..Default::default()
         },
         ..Default::default()
