@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use crate::explosions::components::*;
 use crate::ui::components::*;
 use crate::players::components::*;
 use crate::rockets::components::*;
@@ -55,7 +56,7 @@ pub fn text_update_system(
     mut commands: Commands,
     mut query_text: Query<&mut Text, With<CounterText>>,
     query_player: Query<(&Player, &Team)>,
-    query_objects: Query<Entity, Or<(With<Player>, With<Rocket>)>>,
+    query_objects: Query<Entity, Or<(With<Player>, With<Rocket>, With<Explosion>)>>,
     mut game_state: ResMut<State<GameState>>
 ) {
     let mut text = query_text.single_mut();
@@ -79,9 +80,10 @@ pub fn text_update_system(
     }
     if game_over {
         query_objects.for_each(|entity| {
+            println!("despawning {:?}", entity);
             commands.entity(entity).despawn();
         });
-        game_state.set(GameState::Menu).unwrap();
+        game_state.set(GameState::GameOver).unwrap();
     }
 }
 
@@ -90,7 +92,6 @@ pub fn restart_game(
     input: Res<Input<KeyCode>>,
     mut game_state: ResMut<State<GameState>>
 ) {
-    println!("GameState: {:?}", game_state.current());
     if input.just_pressed(KeyCode::Return) {
         game_state.set(GameState::InGame).unwrap()
     }

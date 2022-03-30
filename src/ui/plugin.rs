@@ -12,7 +12,7 @@ impl Plugin for UIPlugin {
         //     .with_system()
         .add_system_set(SystemSet::on_update(GameState::InGame)
             .with_system(text_update_system.system()))
-        .add_system_set(SystemSet::on_update(GameState::Menu)
+        .add_system_set(SystemSet::on_update(GameState::GameOver)
             .with_system(restart_game.system()));
     }
 }
