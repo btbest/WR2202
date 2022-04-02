@@ -8,14 +8,60 @@ use crate::states::GameState;
 
 
 pub fn ui_start_up_system(
+    mut commands: Commands
+) {
+    commands.spawn_bundle(UiCameraBundle::default());
+}
+
+pub fn start_menu(
     mut commands: Commands,
     assets: Res<AssetServer>,
     windows: Res<Windows>
 ) {
     let window = windows.get_primary().unwrap();
-    commands.spawn_bundle(UiCameraBundle::default());
+    let menu_style = Style {
+        align_self: AlignSelf::Center,
+        // align_content: AlignContent::Center,
+        // justify_content: JustifyContent::Center,
+        position_type: PositionType::Absolute,
+        position: Rect {
+            top: Val::Px(10.0),
+            left: Val::Px(window.width() / 2. - 220.), // definitely not empirically determined
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+    let menu_text = Text::with_section(
+        // Accepts a `String` or any type that converts into a `String`, such as `&str`
+        "Press Enter\n to start!",
+        TextStyle {
+            font: assets.load("fonts/FiraSans-Bold.ttf"),
+            font_size: 100.0,
+            color: Color::WHITE,
+        },
+        // Note: You can use `Default::default()` in place of the `TextAlignment`
+        TextAlignment {
+            horizontal: HorizontalAlign::Center,
+            ..Default::default()
+        },
+    );
+    commands
+        .spawn_bundle(TextBundle {
+            style: menu_style,
+            text: menu_text,
+            ..Default::default()
+        })
+        .insert(MenuText);
+}
+
+pub fn setup_score_counter(
+    mut commands: Commands,
+    assets: Res<AssetServer>,
+    windows: Res<Windows>
+) {
+    let window = windows.get_primary().unwrap();
     // Text with one section
-    let style = Style {
+    let counter_style = Style {
         align_self: AlignSelf::Center,
         // align_content: AlignContent::Center,
         // justify_content: JustifyContent::Center,
@@ -27,7 +73,7 @@ pub fn ui_start_up_system(
         },
         ..Default::default()
     };
-    let text = Text::with_section(
+    let counter_text = Text::with_section(
         // Accepts a `String` or any type that converts into a `String`, such as `&str`
         "0 - 0",
         TextStyle {
@@ -43,20 +89,64 @@ pub fn ui_start_up_system(
     );
     commands
         .spawn_bundle(TextBundle {
-            style,
-            text,
+            style: counter_style,
+            text: counter_text,
             ..Default::default()
         })
         .insert(CounterText);
 }
 
-
-
-pub fn text_update_system(
+pub fn gameover_menu(
     mut commands: Commands,
+    assets: Res<AssetServer>,
+    windows: Res<Windows>,
+    game_state: Res<State<GameState>>
+) {
+    let window = windows.get_primary().unwrap();
+    let menu_text = match game_state.current() {
+        GameState::GameOver('L') => "Left wins!\nPress Enter\n to restart!",
+        GameState::GameOver('R') => "Right wins!\nPress Enter\n to restart!",
+        _ => ""
+    };
+    let menu_style = Style {
+        align_self: AlignSelf::Center,
+        // align_content: AlignContent::Center,
+        // justify_content: JustifyContent::Center,
+        position_type: PositionType::Absolute,
+        position: Rect {
+            top: Val::Px(10.0),
+            left: Val::Px(window.width() / 2. - 220.), // definitely not empirically determined
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+    let menu_text = Text::with_section(
+        // Accepts a `String` or any type that converts into a `String`, such as `&str`
+        menu_text,
+        TextStyle {
+            font: assets.load("fonts/FiraSans-Bold.ttf"),
+            font_size: 100.0,
+            color: Color::WHITE,
+        },
+        // Note: You can use `Default::default()` in place of the `TextAlignment`
+        TextAlignment {
+            horizontal: HorizontalAlign::Center,
+            ..Default::default()
+        },
+    );
+    commands
+        .spawn_bundle(TextBundle {
+            style: menu_style,
+            text: menu_text,
+            ..Default::default()
+        })
+        .insert(MenuText);
+}
+
+
+pub fn score_counter(
     mut query_text: Query<&mut Text, With<CounterText>>,
     query_player: Query<(&Player, &Team)>,
-    query_objects: Query<Entity, Or<(With<Player>, With<Rocket>, With<Explosion>)>>,
     mut game_state: ResMut<State<GameState>>
 ) {
     let mut text = query_text.single_mut();
@@ -72,23 +162,14 @@ pub fn text_update_system(
     text.sections[0].value = format!("{} - {}", points_l, points_r);
     let mut game_over = false;
     if points_l == 0 {
-        text.sections[0].value = format!("R WIN");
-        game_over = true;
+        game_state.set(GameState::GameOver('R')).unwrap();
     } else if points_r == 0 {
-        text.sections[0].value = format!("L WIN");
-        game_over = true;
-    }
-    if game_over {
-        query_objects.for_each(|entity| {
-            println!("despawning {:?}", entity);
-            commands.entity(entity).despawn();
-        });
-        game_state.set(GameState::GameOver).unwrap();
+        game_state.set(GameState::GameOver('L')).unwrap();
     }
 }
 
 
-pub fn start_game_on_enter_system(
+pub fn start_game_by_pressing_return_system(
     input: Res<Input<KeyCode>>,
     mut game_state: ResMut<State<GameState>>
 ) {

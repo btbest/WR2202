@@ -37,6 +37,11 @@ fn main() {
         .add_state(GameState::Menu)
         // This system runs once on startup
         .add_startup_system(start_up)
+        // Clean up screen when changing states
+        .add_system_set(SystemSet::on_exit(GameState::Menu).with_system(teardown))
+        .add_system_set(SystemSet::on_exit(GameState::InGame).with_system(teardown))
+        .add_system_set(SystemSet::on_exit(GameState::GameOver('L')).with_system(teardown))
+        .add_system_set(SystemSet::on_exit(GameState::GameOver('R')).with_system(teardown))
         // Exit on escape:
         .add_system(bevy::input::system::exit_on_esc_system)
         // This is an example of how to structure your game in multiple files.
@@ -57,4 +62,12 @@ fn start_up(
     // Comment changed by Bene
     // `spawn_bundle` spawns an entity and then adds a bunch of Components (the bundle) to it
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
+}
+
+
+// remove all entities that are not a camera
+fn teardown(mut commands: Commands, entities: Query<Entity, Without<Camera>>) {
+    for entity in entities.iter() {
+        commands.entity(entity).despawn_recursive();
+    }
 }

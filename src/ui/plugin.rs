@@ -10,11 +10,13 @@ impl Plugin for UIPlugin {
         .add_startup_system(ui_start_up_system.system())
         // .add_system_set(SystemSet::on_enter(GameState::InGame)
         //     .with_system()
-        .add_system_set(SystemSet::on_update(GameState::Menu)
-            .with_system(start_game_on_enter_system.system()))
-        .add_system_set(SystemSet::on_update(GameState::InGame)
-            .with_system(text_update_system.system()))
-        .add_system_set(SystemSet::on_update(GameState::GameOver)
-            .with_system(start_game_on_enter_system.system()));
+        .add_system_set(SystemSet::on_enter(GameState::Menu).with_system(start_menu.system()))
+        .add_system_set(SystemSet::on_update(GameState::Menu).with_system(start_game_by_pressing_return_system.system()))
+        .add_system_set(SystemSet::on_enter(GameState::InGame).with_system(setup_score_counter.system()))
+        .add_system_set(SystemSet::on_update(GameState::InGame).with_system(score_counter.system()))
+        .add_system_set(SystemSet::on_enter(GameState::GameOver('L')).with_system(gameover_menu.system()))
+        .add_system_set(SystemSet::on_enter(GameState::GameOver('R')).with_system(gameover_menu.system()))
+        .add_system_set(SystemSet::on_update(GameState::GameOver('L')).with_system(start_game_by_pressing_return_system.system()))
+        .add_system_set(SystemSet::on_update(GameState::GameOver('R')).with_system(start_game_by_pressing_return_system.system()));
     }
 }
