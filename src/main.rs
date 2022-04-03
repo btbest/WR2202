@@ -25,6 +25,7 @@ fn main() {
             mode: WindowMode::Windowed,
             ..Default::default()
         })
+        .insert_resource(ClearColor(Color::rgb(0., 0., 0.)))
         // This gives you a game-loop, a window, audio, asset server and so on... (basically the default engine)
         // See https://github.com/bevyengine/bevy/blob/v0.6.0/examples/app/plugin_group.rs for more info on plugin groups
         .add_plugins(DefaultPlugins)
