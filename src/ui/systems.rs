@@ -1,8 +1,6 @@
 use bevy::prelude::*;
-use crate::explosions::components::*;
 use crate::ui::components::*;
 use crate::players::components::*;
-use crate::rockets::components::*;
 use crate::interaction::components::*;
 use crate::states::GameState;
 
@@ -160,7 +158,6 @@ pub fn score_counter(
     }
     // Update the value of the second section
     text.sections[0].value = format!("{} - {}", points_l, points_r);
-    let mut game_over = false;
     if points_l == 0 {
         game_state.set(GameState::GameOver('R')).unwrap();
     } else if points_r == 0 {
