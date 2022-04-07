@@ -41,8 +41,8 @@ fn main() {
         // Clean up screen when changing states
         .add_system_set(SystemSet::on_exit(GameState::Menu).with_system(teardown))
         .add_system_set(SystemSet::on_exit(GameState::InGame).with_system(teardown))
-        .add_system_set(SystemSet::on_exit(GameState::GameOver('L')).with_system(teardown))
-        .add_system_set(SystemSet::on_exit(GameState::GameOver('R')).with_system(teardown))
+        .add_system_set(SystemSet::on_exit(GameState::WonBy('L')).with_system(teardown))
+        .add_system_set(SystemSet::on_exit(GameState::WonBy('R')).with_system(teardown))
         // Exit on escape:
         .add_system(bevy::input::system::exit_on_esc_system)
         // This is an example of how to structure your game in multiple files.

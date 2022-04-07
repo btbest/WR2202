@@ -2,5 +2,5 @@
 pub enum GameState {
     Menu,
     InGame,
-    GameOver(char)
+    WonBy(char)
 }

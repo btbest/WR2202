@@ -103,8 +103,8 @@ pub fn gameover_menu(
 ) {
     let window = windows.get_primary().unwrap();
     let menu_text = match game_state.current() {
-        GameState::GameOver('L') => "Left wins!\nPress Enter\n to restart!",
-        GameState::GameOver('R') => "Right wins!\nPress Enter\n to restart!",
+        GameState::WonBy('L') => "Left wins!\nPress Enter\n to restart!",
+        GameState::WonBy('R') => "Right wins!\nPress Enter\n to restart!",
         _ => ""
     };
     let menu_style = Style {
@@ -160,9 +160,9 @@ pub fn score_counter(
     // Update the value of the second section
     text.sections[0].value = format!("{} - {}", points_l, points_r);
     if points_l == 0 {
-        game_state.set(GameState::GameOver('R')).unwrap();
+        game_state.set(GameState::WonBy('R')).unwrap();
     } else if points_r == 0 {
-        game_state.set(GameState::GameOver('L')).unwrap();
+        game_state.set(GameState::WonBy('L')).unwrap();
     }
 }
 
