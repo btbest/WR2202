@@ -3,6 +3,7 @@ use crate::ui::components::*;
 use crate::players::components::*;
 use crate::interaction::components::*;
 use crate::states::GameState;
+use std::path::Path;
 
 
 pub fn ui_start_up_system(
@@ -33,7 +34,7 @@ pub fn start_menu(
         // Accepts a `String` or any type that converts into a `String`, such as `&str`
         "Press Enter\n to start!",
         TextStyle {
-            font: assets.load("fonts/FiraSans-Bold.ttf"),
+            font: assets.load(Path::new("fonts").join("FiraSans-Bold.ttf")),
             font_size: 100.0,
             color: Color::WHITE,
         },
@@ -75,7 +76,7 @@ pub fn setup_score_counter(
         // Accepts a `String` or any type that converts into a `String`, such as `&str`
         "0 - 0",
         TextStyle {
-            font: assets.load("fonts/FiraSans-Bold.ttf"),
+            font: assets.load(Path::new("fonts").join("FiraSans-Bold.ttf")),
             font_size: 100.0,
             color: Color::WHITE,
         },
@@ -122,7 +123,7 @@ pub fn gameover_menu(
         // Accepts a `String` or any type that converts into a `String`, such as `&str`
         menu_text,
         TextStyle {
-            font: assets.load("fonts/FiraSans-Bold.ttf"),
+            font: assets.load(Path::new("fonts").join("FiraSans-Bold.ttf")),
             font_size: 100.0,
             color: Color::WHITE,
         },
