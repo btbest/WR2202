@@ -725,13 +725,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_workshop"
-version = "0.1.0"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "bindgen"
 version = "0.56.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2904,6 +2897,13 @@ dependencies = [
  "same-file",
  "winapi",
  "winapi-util",
+]
+
+[[package]]
+name = "war_rockets_2202"
+version = "1.0.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]
