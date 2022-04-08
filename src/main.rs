@@ -1,4 +1,3 @@
-//#![allow(unused)]
 use bevy::prelude::*;
 use bevy::window::WindowMode;
 mod players;
@@ -13,10 +12,12 @@ mod explosions;
 use crate::explosions::plugin::ExplosionsPlugin;
 mod states;
 use crate::states::GameState;
-
+mod networking;
+use crate::networking::plugin::NetworkingPlugin;
 
 fn main() {
     App::new()
+        .add_plugin(NetworkingPlugin)
         .insert_resource(WindowDescriptor {
             title: "War Rockets 2202".to_string(),
             width: 800.0,
@@ -45,8 +46,6 @@ fn main() {
         .add_system_set(SystemSet::on_exit(GameState::WonBy('R')).with_system(teardown))
         // Exit on escape:
         .add_system(bevy::input::system::exit_on_esc_system)
-        // This is an example of how to structure your game in multiple files.
-        // We moved a system into a custom plugin.
         .add_plugin(RocketPlugin)
         .add_plugin(PlayerPlugin)
         .add_plugin(InteractionPlugin)
